@@ -7,17 +7,22 @@ public class ShowSorter {
 
     private Shows shows;
     private Comparator comparator = new Comparator();
+    private List<Show> sorted = new LinkedList<>();
 
     public ShowSorter(Shows shows) {
         this.shows = shows;
     }
 
     public void init() {
-        
+        boolean unfinished = true;
+        List<Show> allShows = shows.getShows();
+        while (unfinished) {
+            Collections.shuffle(allShows);
+            unfinished = compare(allShows.get(0));
+        }
     }
 
-
-    public Show getComparative(Show show) {
+    private Show getComparative(Show show) {
         List<Show> otherShows = shows.showsLess(show);
         Shows.shuffleShows(otherShows);
         for (Show s : otherShows) {
@@ -26,7 +31,7 @@ public class ShowSorter {
         return show;
     }
 
-    public boolean compare(Show show) {
+    private boolean compare(Show show) {
         Show other = getComparative(show);
         if (show.equals(other)) return false;
         int result = comparator.compare(show, other);
@@ -40,6 +45,8 @@ public class ShowSorter {
             return true;
         }
     }
+
+
 
 
 
